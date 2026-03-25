@@ -8,228 +8,168 @@
         body, html {
             margin: 0;
             padding: 0;
+            background: #000;
+            color: #fdf5e6;
+            font-family: 'Georgia', serif;
+            /* Разрешаем обычный скролл пальцем */
+            overflow-y: auto;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        /* Красивый фон с градиентом */
+        .bg {
+            position: fixed;
+            top: 0;
+            left: 0;
             width: 100%;
             height: 100%;
-            overflow: hidden; /* Скрываем полосы прокрутки, используем JS-скролл */
-            background: #000; /* Глубокий черный фон */
-            color: #d4af37; /* Элегантный золотой цвет текста */
-            font-family: 'Georgia', serif; /* Классический, поэтичный шрифт */
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            background: radial-gradient(circle at center, #1a0b0e 0%, #000 80%);
+            z-index: -1;
         }
 
-        /* Золотисто-розовое свечение на фоне (аура) */
-        .background-overlay {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 80vw;
-            height: 80vw;
-            max-width: 800px;
-            max-height: 800px;
-            background: radial-gradient(circle, rgba(212, 175, 55, 0.15) 0%, rgba(255, 77, 109, 0.05) 50%, rgba(0,0,0,0) 70%);
-            border-radius: 50%;
-            z-index: 1;
+        /* Частицы на фоне */
+        #canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 0;
+            pointer-events: none;
         }
 
-        /* Контейнер для текста свитка */
-        .poem-container {
+        .container {
             position: relative;
-            z-index: 10; /* Текст поверх фона */
-            width: 90%;
-            max-width: 650px;
-            height: 85vh; /* Область видимости текста */
+            z-index: 10;
+            width: 85%;
+            max-width: 500px;
+            margin: 0 auto;
             text-align: center;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            overflow: hidden; /* Скрываем текст вне области */
-            
-            /* Мягкое размытие по краям (mask-image) */
-            -webkit-mask-image: linear-gradient(to bottom, transparent, black 15%, black 85%, transparent);
-            mask-image: linear-gradient(to bottom, transparent, black 15%, black 85%, transparent);
+            padding-top: 40vh; /* Чтобы текст начинался не сразу */
+            padding-bottom: 50vh; /* Чтобы можно было долистать до конца */
         }
 
-        /* Сам текст, который будет плавно подниматься */
-        .poem-content {
-            position: absolute;
-            width: 100%;
-            /* Анимация медленного поднятия. Время (200s) можно увеличить, если текст будет слишком быстрым */
-            animation: scrollPoem 200s linear infinite; 
-        }
-
-        /* Стилизация заголовка с именем Вика */
-        .poem-content h1 {
-            color: #ff4d6d; /* Красивый розово-красный для имени */
-            font-size: 3rem;
-            margin-bottom: 50px;
-            font-weight: normal;
-            font-style: italic;
-            text-shadow: 0 0 15px rgba(255, 77, 109, 0.5);
-        }
-
-        /* Стилизация абзацев */
-        .poem-content p {
-            font-size: 1.5rem;
-            line-height: 1.9; /* Увеличенный отступ между строками для читаемости */
-            margin: 25px 0;
-            color: #e0e0e0; /* Мягкий белый для основного текста */
-            opacity: 0.9;
-        }
-
-        /* Выделение ключевых слов жирным золотым */
-        .poem-content p strong {
+        h1 {
+            font-size: 3.5rem;
             color: #d4af37;
-            font-weight: bold;
+            text-shadow: 0 0 20px rgba(212, 175, 55, 0.4);
+            margin-bottom: 100px;
+            font-style: italic;
         }
 
-        /* Финальное пульсирующее сердечко */
-        .final-heart {
+        p {
+            font-size: 1.4rem;
+            line-height: 2.2;
+            margin: 60px 0;
+            opacity: 0.2; /* Изначально текст почти прозрачный */
+            transform: translateY(20px);
+            transition: all 1s ease-out; /* Плавное проявление при скролле */
+        }
+
+        /* Класс для активной (видимой) строки */
+        p.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        strong {
             color: #ff4d6d;
-            font-size: 2.5rem;
-            margin-top: 50px;
-            display: block;
-            animation: pulse 2.5s infinite;
+            font-weight: normal;
         }
 
-        /* АНИМАЦИЯ МЕДЛЕННОГО И ПЛАВНОГО ПОДНЯТИЯ ТЕКСТА */
-        @keyframes scrollPoem {
-            0% { transform: translateY(85vh); } /* Начинаем чуть ниже видимой области */
-            100% { transform: translateY(-100%); } /* Полностью уходим вверх */
+        .heart {
+            font-size: 4rem;
+            color: #ff4d6d;
+            margin-top: 100px;
+            display: inline-block;
+            animation: pulse 2s infinite;
         }
 
-        /* АНИМАЦИЯ ПУЛЬСАЦИИ СЕРДЕЧКА */
         @keyframes pulse {
             0% { transform: scale(1); opacity: 0.8; }
             50% { transform: scale(1.2); opacity: 1; }
             100% { transform: scale(1); opacity: 0.8; }
         }
-
-        /* МАГИЯ НА ФОНЕ (Золотые частицы) */
-        .magic-particles {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 2; /* Частицы между аурой и текстом */
-            pointer-events: none;
-        }
-
-        .particle {
-            position: absolute;
-            background-color: rgba(212, 175, 55, 0.3); /* Прозрачное золото */
-            border-radius: 50%;
-            animation: floatParticle linear infinite;
-        }
-
-        @keyframes floatParticle {
-            0% { transform: translateY(100vh) scale(0); opacity: 0; }
-            10% { opacity: 1; }
-            90% { opacity: 1; }
-            100% { transform: translateY(-10vh) scale(1) rotate(360deg); opacity: 0; }
-        }
     </style>
 </head>
 <body>
 
-    <div class="background-overlay"></div>
+    <div class="bg"></div>
+    <canvas id="canvas"></canvas>
 
-    <div class="magic-particles" id="particles-container"></div>
+    <div class="container">
+        <h1>Вика.</h1>
+        
+        <p>Есть люди, которые просто проходят мимо, а есть те, кто меняет твой мир навсегда.</p>
+        <p>Для меня таким человеком стала ты.</p>
+        
+        <p>Я люблю тебя за твою невероятную <strong>заботу</strong>, которая согревает лучше любого солнца.</p>
+        <p>За твою редкую <strong>доброту</strong> и <strong>искренность</strong>.</p>
+        
+        <p>В мире, где так много фальши, твоя <strong>честность</strong> для меня как глоток чистого воздуха.</p>
+        <p>Ты — самый добрый человек, которого я знаю.</p>
 
-    <div class="poem-container">
-        <div class="poem-content">
-            <h1>Вика.</h1>
-            
-            <p>Есть люди, которые просто проходят мимо,</p>
-            <p>а есть те, кто меняет твой мир навсегда.</p>
-            <p>Для меня таким человеком стала ты.</p>
-            <p>Я долго думал, как выразить всё то, что чувствую,</p>
-            <p>и понял, что слов всегда будет мало.</p>
-            <p>Но я хочу, чтобы ты знала...</p>
+        <p>Я люблю тебя за твою <strong>поддержку</strong>. За то, что ты веришь в меня и всегда рядом.</p>
+        <p>Твоя <strong>щедрость</strong> души — это то, что я ценю в тебе бесконечно.</p>
 
-            <p>Я люблю тебя за твою невероятную <strong>заботу</strong>,</p>
-            <p>которая согревает лучше любого солнца.</p>
-            <p>За твою редкую <strong>доброту</strong> и <strong>искренность</strong> —</p>
-            <p>в мире, где так много фальши, твоя честность</p>
-            <p>для меня как глоток чистого воздуха.</p>
-            <p>Ты — самый добрый и отзывчивый человек, которого я знаю.</p>
+        <p>Вика, ты ослепительно <strong>красива</strong>, но твоя внутренняя красота еще ярче.</p>
+        <p>Я люблю твой смех и ту <strong>лёгкость</strong>, которая бывает только с самым близким человеком.</p>
 
-            <p>Я люблю тебя за твою <strong>поддержку</strong>.</p>
-            <p>За то, что ты веришь в меня и всегда рядом, когда это нужно.</p>
-            <p>Твоя <strong>щедрость</strong> души и умение отдавать себя без остатка —</p>
-            <p>это то, что я ценю в тебе бесконечно.</p>
+        <p>Спасибо тебе за твое <strong>умение слушать</strong>, за твои <strong>объятия</strong> и за то, что ты есть.</p>
 
-            <p>В тебе удивительно сочетаются сильный <strong>характер</strong>,</p>
-            <p>железная <strong>целеустремленность</strong> и при этом —</p>
-            <p>потрясающая <strong>чувствительность</strong> и нежность.</p>
-            <p>Твоя <strong>страсть</strong> к жизни, твои <strong>таланты</strong> и <strong>креативность</strong></p>
-            <p>не перестают меня восхищать.</p>
+        <p>Моя жизнь стала по-настоящему полной только тогда, когда в ней появилась ты.</p>
 
-            <p>Вика, ты ослепительно <strong>красива</strong>,</p>
-            <p>но твоя внутренняя красота еще ярче.</p>
-            <p>Я люблю твою <strong>весёлую натуру</strong>, твой смех</p>
-            <p>и ту <strong>лёгкость общения</strong>,</p>
-            <p>которая бывает только с самым близким человеком.</p>
-            <p>Спасибо тебе за твое <strong>умение слушать</strong>,</p>
-            <p>за твою <strong>терпимость</strong></p>
-            <p>и за те самые <strong>объятия</strong>,</p>
-            <p>в которых я забываю обо всем на свете.</p>
+        <p style="font-size: 1.8rem;"><strong>Я люблю тебя. Навсегда.</strong></p>
 
-            <p>Но больше всего я люблю тебя просто за то, что ты есть.</p>
-            <p>За то, что ты — это ты.</p>
-            <p>Моя жизнь стала по-настоящему полной только тогда,</p>
-            <p>когда в ней появилась ты.</p>
-
-            <p><strong>Я люблю тебя, Вика. Навсегда.</strong></p>
-
-            <span class="final-heart">❤</span>
-            
-            <div style="height: 100vh;"></div>
-        </div>
+        <div class="heart">❤</div>
     </div>
 
     <script>
-        function createParticle() {
-            const container = document.getElementById('particles-container');
-            if (!container) return;
-
-            const p = document.createElement('div');
-            p.classList.add('particle');
-            
-            // Случайный размер частицы (от 3px до 8px)
-            const size = (Math.random() * 5 + 3) + 'px';
-            p.style.width = size;
-            p.style.height = size;
-            
-            // Случайная позиция по горизонтали
-            p.style.left = Math.random() * 100 + 'vw';
-            
-            // Случайная длительность полета (от 15 до 25 секунд) — ОЧЕНЬ медленно
-            p.style.animationDuration = (Math.random() * 10 + 15) + 's';
-            
-            // Случайная задержка начала анимации
-            p.style.animationDelay = (Math.random() * 5) + 's';
-
-            // Размытие для эффекта глубины
-            p.style.filter = `blur(${Math.random() * 2}px)`;
-
-            container.appendChild(p);
-            
-            // Удаляем частицу после завершения анимации
-            setTimeout(() => {
-                p.remove();
-            }, (parseFloat(p.style.animationDuration) + parseFloat(p.style.animationDelay)) * 1000);
+        // Код для золотых частиц
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+        function init() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            for(let i = 0; i < 50; i++) {
+                particles.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    size: Math.random() * 2 + 1,
+                    speed: Math.random() * 0.3 + 0.1,
+                    opacity: Math.random() * 0.5
+                });
+            }
         }
-        
-        // Создаем новые частицы каждые 300мс
-        setInterval(createParticle, 300);
-        
-        // Сразу заполняем фон, чтобы он не был пустым при загрузке
-        for(let i=0; i<30; i++){ createParticle(); }
+        function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => {
+                ctx.fillStyle = `rgba(212, 175, 55, ${p.opacity})`;
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                ctx.fill();
+                p.y -= p.speed;
+                if(p.y < -10) p.y = canvas.height + 10;
+            });
+            requestAnimationFrame(draw);
+        }
+        init(); draw();
+
+        // Скрипт для проявления текста при скролле
+        const paragraphs = document.querySelectorAll('p');
+        const observerOptions = {
+            threshold: 0.5 // Текст проявляется, когда он на середине экрана
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        paragraphs.forEach(p => observer.observe(p));
     </script>
 </body>
 </html>
