@@ -2,90 +2,102 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Для тебя</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Для тебя, Беха</title>
     <style>
         body {
             margin: 0;
             padding: 0;
-            background-color: #000; /* Черный фон */
-            color: #fff;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            overflow: hidden;
+            background-color: #000; /* Глубокий черный фон */
+            color: #fff; /* Белый цвет текста для контраста */
+            font-family: 'Georgia', serif; /* Более "поэтичный" шрифт с засечками */
+            overflow: hidden; /* Скрываем полосы прокрутки */
             display: flex;
+            justify-content: center;
             align-items: center;
             height: 100vh;
-            position: relative; /* Для позиционирования сердечек */
+            position: relative;
         }
 
-        /* Контейнер для анимации текста */
-        .marquee-container {
-            display: flex;
-            overflow: hidden;
-            white-space: nowrap;
-            user-select: none;
-            z-index: 2; /* Текст поверх сердечек */
+        /* КОНТЕЙНЕР ДЛЯ ПОЭТИЧНОГО СВИТКА */
+        .poem-wrapper {
+            position: relative;
+            z-index: 10; /* Текст гарантированно ПЕРЕД сердечками */
+            width: 80%; /* Узкая колонка для стиха */
+            max-width: 600px;
+            height: 80vh; /* Высота области видимости текста */
+            overflow: hidden; /* Скрываем текст вне этой области */
+            text-align: center; /* Центрируем строки */
+            mask-image: linear-gradient(to bottom, transparent, black 20%, black 80%, transparent); /* Мягкое размытие по краям */
+            -webkit-mask-image: linear-gradient(to bottom, transparent, black 20%, black 80%, transparent);
+        }
+
+        /* САМ ТЕКСТ, КОТОРЫЙ ДВИЖЕТСЯ */
+        .poem-content {
+            position: absolute;
             width: 100%;
+            animation: scrollPoem 80s linear infinite; /* ОЧЕНЬ медленная анимация (80 секунд) */
         }
 
-        /* Сама строка с текстом */
-        .marquee-content {
-            display: flex;
-            animation: scroll 40s linear infinite;
-        }
-
-        .text-item {
+        /* СТИЛИЗАЦИЯ ЗАГОЛОВКА */
+        .poem-content h1 {
+            color: #ff4d6d; /* Красивый розово-красный для имени */
             font-size: 2.5rem;
-            font-weight: bold;
-            padding-right: 50px;
-            color: #ff4d6d; /* Основной цвет текста */
-            display: flex;
-            align-items: center;
+            margin-bottom: 40px;
+            font-weight: normal;
         }
 
-        /* Анимация движения текста */
-        @keyframes scroll {
-            from { transform: translateX(0); }
-            to { transform: translateX(-50%); }
+        /* СТИЛИЗАЦИЯ СТРОК СТИХА */
+        .poem-content p {
+            font-size: 1.4rem;
+            line-height: 1.8; /* Увеличенный отступ между строками */
+            margin: 15px 0;
+            color: #f0f0f0; /* Слегка сероватый белый для мягкости */
         }
 
-        /* Пульсирующее сердечко в тексте */
-        .heart-inline {
-            color: red;
-            display: inline-block;
-            margin-left: 10px;
-            animation: pulse 1.5s infinite;
+        /* ПОСЛЕДНЕЕ СЕРДЕЧКО В КОНЦЕ */
+        .final-heart {
+            color: #ff4d6d;
+            font-size: 2rem;
+            margin-top: 30px;
+            display: block;
+            animation: pulse 2s infinite;
         }
 
+        /* АНИМАЦИЯ МЕДЛЕННОГО ПОДНЯТИЯ ТЕКСТА */
+        @keyframes scrollPoem {
+            0% { transform: translateY(80vh); } /* Начинаем чуть ниже видимой области */
+            100% { transform: translateY(-100%); } /* Уходим полностью вверх */
+        }
+
+        /* АНИМАЦИЯ ПУЛЬСАЦИИ СЕРДЕЧКА */
         @keyframes pulse {
             0% { transform: scale(1); }
             50% { transform: scale(1.2); }
             100% { transform: scale(1); }
         }
 
-        /* Стили для падающих сердечек на фоне */
-        .background-heart {
+        /* СТИЛИ ДЛЯ ЛЕТАЮЩИХ СЕРДЕЧЕК НА ЗАДНЕМ ПЛАНЕ */
+        .background-hearts {
             position: absolute;
-            color: rgba(255, 77, 109, 0.5); /* Полупрозрачный розовый */
-            user-select: none;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1; /* Сердечки СЗАДИ текста */
             pointer-events: none; /* Чтобы не мешали нажатиям */
-            z-index: 1; /* Фон */
-            animation: floatHearts linear infinite;
         }
 
-        @keyframes floatHearts {
-            0% {
-                transform: translateY(100vh) rotate(0deg);
-                opacity: 0;
-            }
-            10% {
-                opacity: 1;
-            }
-            90% {
-                opacity: 1;
-            }
-            100% {
-                transform: translateY(-10vh) rotate(360deg);
+        .b-heart {
+            position: absolute;
+            bottom: -50px;
+            color: rgba(255, 77, 109, 0.2); /* Очень прозрачные, чтобы не отвлекать */
+            animation: fly linear infinite;
+        }
+
+        @keyframes fly {
+            to {
+                transform: translateY(-110vh) rotate(360deg);
                 opacity: 0;
             }
         }
@@ -93,56 +105,64 @@
 </head>
 <body>
 
-    <div class="marquee-container">
-        <div class="marquee-content">
-            <div class="text-item">
-                @𝐁𝐞𝐡𝐚: Я люблю тебя за твою заботу, за твою доброту, за твою поддержку, за твою щедрость, за твой характер, за твою страсть, за твою терпимость, за твои таланты, за твою креативность, за твою красоту, за твою чувствительность, за твою смелость, за твоё умение слушать, за твою весёлую натуру, за твою искренность, за твою целеустремленность, за твои объятия, за твою лёгкость общения, за то, что ты есть в моей жизни <span class="heart-inline">❤</span>
-            </div>
-            <div class="text-item">
-                @𝐁𝐞𝐡𝐚: Я люблю тебя за твою заботу, за твою доброту, за твою поддержку, за твою щедрость, за твой характер, за твою страсть, за твою терпимость, за твои таланты, за твою креативность, за твою красоту, за твою чувствительность, за твою смелость, за твоё умение слушать, за твою весёлую натуру, за твою искренность, за твою целеустремленность, за твои объятия, за твою лёгкость общения, за то, что ты есть в моей жизни <span class="heart-inline">❤</span>
-            </div>
+    <div class="background-hearts" id="hearts-container"></div>
+
+    <div class="poem-wrapper">
+        <div class="poem-content">
+            <h1>@𝐁𝐞𝐡𝐚:</h1>
+            
+            <p>Я люблю тебя за твою заботу,</p>
+            <p>Я люблю тебя за твою доброту,</p>
+            <p>Я люблю тебя за твою поддержку,</p>
+            <p>Я люблю тебя за твою щедрость,</p>
+            <p>Я люблю тебя за твой характер,</p>
+            <p>Я люблю тебя за твою страсть,</p>
+            <p>Я люблю тебя за твою терпимость,</p>
+            <p>Я люблю тебя за твои таланты,</p>
+            <p>Я люблю тебя за твою креативность,</p>
+            <p>Я люблю тебя за твою красоту,</p>
+            <p>Я люблю тебя за твою чувствительность,</p>
+            <p>Я люблю тебя за твою смелость,</p>
+            <p>Я люблю тебя за твоё умение слушать,</p>
+            <p>Я люблю тебя за твою весёлую натуру,</p>
+            <p>Я люблю тебя за твою искренность,</p>
+            <p>За твою целеустремленность,</p>
+            <p>Я люблю тебя за твои объятия,</p>
+            <p>Я люблю тебя за твою лёгкость общения,</p>
+            <p>Я люблю тебя просто за то,</p>
+            <p>Что ты есть в моей жизни.</p>
+
+            <span class="final-heart">❤</span>
+            
+            <div style="height: 100vh;"></div>
         </div>
     </div>
 
     <script>
         function createHeart() {
-            const heart = document.createElement('div');
-            heart.classList.add('background-heart');
-            
-            // Набор символов сердечек
-            const heartTypes = ['❤', '💖', '💗', '💓', '💕'];
-            heart.innerText = heartTypes[Math.floor(Math.random() * heartTypes.length)];
-            
-            // Случайная позиция по горизонтали
-            heart.style.left = Math.random() * 100 + 'vw';
-            
-            // Случайный размер
-            const size = (Math.random() * 1.5 + 0.5) + 'rem';
-            heart.style.fontSize = size;
-            
-            // Случайная длительность анимации (скорость)
-            const duration = (Math.random() * 10 + 5) + 's';
-            heart.style.animationDuration = duration;
-            
-            // Случайная задержка начала
-            heart.style.animationDelay = Math.random() * 5 + 's';
+            const container = document.getElementById('hearts-container');
+            if (!container) return;
 
-            document.body.appendChild(heart);
-
-            // Удаляем элемент после завершения анимации, чтобы не перегружать память
-            setTimeout(() => {
-                heart.remove();
-            }, (parseFloat(duration) + parseFloat(heart.style.animationDelay)) * 1000);
+            const h = document.createElement('div');
+            h.classList.add('b-heart');
+            
+            const types = ['❤', '💖', '💗', '💓', '💕'];
+            h.innerHTML = types[Math.floor(Math.random() * types.length)];
+            
+            h.style.left = Math.random() * 100 + 'vw';
+            h.style.animationDuration = (Math.random() * 5 + 10) + 's'; /* ОЧЕНЬ медленный полет фона */
+            h.style.fontSize = (Math.random() * 20 + 15) + 'px'; /* Размер сердечек */
+            
+            container.appendChild(h);
+            
+            setTimeout(() => h.remove(), 15000);
         }
-
-        // Генерируем сердечки каждые 300мс
-        setInterval(createHeart, 300);
-
-        // Сразу создаем несколько, чтобы фон не был пустым при загрузке
-        for(let i=0; i<15; i++) {
-            createHeart();
-        }
+        
+        // Создаем новые фоновые сердечки реже
+        setInterval(createHeart, 400);
+        
+        // Сразу заполняем фон
+        for(let i=0; i<20; i++){ createHeart(); }
     </script>
-
 </body>
 </html>
