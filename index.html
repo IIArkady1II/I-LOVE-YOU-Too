@@ -3,134 +3,188 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Для тебя, Беха</title>
+    <title>Для тебя, Вика</title>
     <style>
-        body {
+        body, html {
             margin: 0;
             padding: 0;
-            background-color: #000; /* Глубокий черный фон */
-            color: #fff; /* Белый цвет текста для контраста */
-            font-family: 'Georgia', serif; /* Более "поэтичный" шрифт с засечками */
-            overflow: hidden; /* Скрываем полосы прокрутки */
+            width: 100%;
+            height: 100%;
+            overflow: hidden; /* Скрываем полосы прокрутки, используем JS-скролл */
+            background: #000; /* Глубокий черный фон */
+            color: #d4af37; /* Элегантный золотой цвет текста */
+            font-family: 'Georgia', serif; /* Классический, поэтичный шрифт */
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-            position: relative;
         }
 
-        /* КОНТЕЙНЕР ДЛЯ ПОЭТИЧНОГО СВИТКА */
-        .poem-wrapper {
-            position: relative;
-            z-index: 10; /* Текст гарантированно ПЕРЕД сердечками */
-            width: 80%; /* Узкая колонка для стиха */
-            max-width: 600px;
-            height: 80vh; /* Высота области видимости текста */
-            overflow: hidden; /* Скрываем текст вне этой области */
-            text-align: center; /* Центрируем строки */
-            mask-image: linear-gradient(to bottom, transparent, black 20%, black 80%, transparent); /* Мягкое размытие по краям */
-            -webkit-mask-image: linear-gradient(to bottom, transparent, black 20%, black 80%, transparent);
+        /* Золотисто-розовое свечение на фоне (аура) */
+        .background-overlay {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80vw;
+            height: 80vw;
+            max-width: 800px;
+            max-height: 800px;
+            background: radial-gradient(circle, rgba(212, 175, 55, 0.15) 0%, rgba(255, 77, 109, 0.05) 50%, rgba(0,0,0,0) 70%);
+            border-radius: 50%;
+            z-index: 1;
         }
 
-        /* САМ ТЕКСТ, КОТОРЫЙ ДВИЖЕТСЯ */
+        /* Контейнер для текста свитка */
+        .poem-container {
+            position: relative;
+            z-index: 10; /* Текст поверх фона */
+            width: 90%;
+            max-width: 650px;
+            height: 85vh; /* Область видимости текста */
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden; /* Скрываем текст вне области */
+            
+            /* Мягкое размытие по краям (mask-image) */
+            -webkit-mask-image: linear-gradient(to bottom, transparent, black 15%, black 85%, transparent);
+            mask-image: linear-gradient(to bottom, transparent, black 15%, black 85%, transparent);
+        }
+
+        /* Сам текст, который будет плавно подниматься */
         .poem-content {
             position: absolute;
             width: 100%;
-            animation: scrollPoem 80s linear infinite; /* ОЧЕНЬ медленная анимация (80 секунд) */
+            /* Анимация медленного поднятия. Время (200s) можно увеличить, если текст будет слишком быстрым */
+            animation: scrollPoem 200s linear infinite; 
         }
 
-        /* СТИЛИЗАЦИЯ ЗАГОЛОВКА */
+        /* Стилизация заголовка с именем Вика */
         .poem-content h1 {
             color: #ff4d6d; /* Красивый розово-красный для имени */
-            font-size: 2.5rem;
-            margin-bottom: 40px;
+            font-size: 3rem;
+            margin-bottom: 50px;
             font-weight: normal;
+            font-style: italic;
+            text-shadow: 0 0 15px rgba(255, 77, 109, 0.5);
         }
 
-        /* СТИЛИЗАЦИЯ СТРОК СТИХА */
+        /* Стилизация абзацев */
         .poem-content p {
-            font-size: 1.4rem;
-            line-height: 1.8; /* Увеличенный отступ между строками */
-            margin: 15px 0;
-            color: #f0f0f0; /* Слегка сероватый белый для мягкости */
+            font-size: 1.5rem;
+            line-height: 1.9; /* Увеличенный отступ между строками для читаемости */
+            margin: 25px 0;
+            color: #e0e0e0; /* Мягкий белый для основного текста */
+            opacity: 0.9;
         }
 
-        /* ПОСЛЕДНЕЕ СЕРДЕЧКО В КОНЦЕ */
+        /* Выделение ключевых слов жирным золотым */
+        .poem-content p strong {
+            color: #d4af37;
+            font-weight: bold;
+        }
+
+        /* Финальное пульсирующее сердечко */
         .final-heart {
             color: #ff4d6d;
-            font-size: 2rem;
-            margin-top: 30px;
+            font-size: 2.5rem;
+            margin-top: 50px;
             display: block;
-            animation: pulse 2s infinite;
+            animation: pulse 2.5s infinite;
         }
 
-        /* АНИМАЦИЯ МЕДЛЕННОГО ПОДНЯТИЯ ТЕКСТА */
+        /* АНИМАЦИЯ МЕДЛЕННОГО И ПЛАВНОГО ПОДНЯТИЯ ТЕКСТА */
         @keyframes scrollPoem {
-            0% { transform: translateY(80vh); } /* Начинаем чуть ниже видимой области */
-            100% { transform: translateY(-100%); } /* Уходим полностью вверх */
+            0% { transform: translateY(85vh); } /* Начинаем чуть ниже видимой области */
+            100% { transform: translateY(-100%); } /* Полностью уходим вверх */
         }
 
         /* АНИМАЦИЯ ПУЛЬСАЦИИ СЕРДЕЧКА */
         @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.2); }
-            100% { transform: scale(1); }
+            0% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(1.2); opacity: 1; }
+            100% { transform: scale(1); opacity: 0.8; }
         }
 
-        /* СТИЛИ ДЛЯ ЛЕТАЮЩИХ СЕРДЕЧЕК НА ЗАДНЕМ ПЛАНЕ */
-        .background-hearts {
+        /* МАГИЯ НА ФОНЕ (Золотые частицы) */
+        .magic-particles {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            z-index: 1; /* Сердечки СЗАДИ текста */
-            pointer-events: none; /* Чтобы не мешали нажатиям */
+            z-index: 2; /* Частицы между аурой и текстом */
+            pointer-events: none;
         }
 
-        .b-heart {
+        .particle {
             position: absolute;
-            bottom: -50px;
-            color: rgba(255, 77, 109, 0.2); /* Очень прозрачные, чтобы не отвлекать */
-            animation: fly linear infinite;
+            background-color: rgba(212, 175, 55, 0.3); /* Прозрачное золото */
+            border-radius: 50%;
+            animation: floatParticle linear infinite;
         }
 
-        @keyframes fly {
-            to {
-                transform: translateY(-110vh) rotate(360deg);
-                opacity: 0;
-            }
+        @keyframes floatParticle {
+            0% { transform: translateY(100vh) scale(0); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-10vh) scale(1) rotate(360deg); opacity: 0; }
         }
     </style>
 </head>
 <body>
 
-    <div class="background-hearts" id="hearts-container"></div>
+    <div class="background-overlay"></div>
 
-    <div class="poem-wrapper">
+    <div class="magic-particles" id="particles-container"></div>
+
+    <div class="poem-container">
         <div class="poem-content">
-            <h1>@𝐁𝐞𝐡𝐚:</h1>
+            <h1>Вика.</h1>
             
-            <p>Я люблю тебя за твою заботу,</p>
-            <p>Я люблю тебя за твою доброту,</p>
-            <p>Я люблю тебя за твою поддержку,</p>
-            <p>Я люблю тебя за твою щедрость,</p>
-            <p>Я люблю тебя за твой характер,</p>
-            <p>Я люблю тебя за твою страсть,</p>
-            <p>Я люблю тебя за твою терпимость,</p>
-            <p>Я люблю тебя за твои таланты,</p>
-            <p>Я люблю тебя за твою креативность,</p>
-            <p>Я люблю тебя за твою красоту,</p>
-            <p>Я люблю тебя за твою чувствительность,</p>
-            <p>Я люблю тебя за твою смелость,</p>
-            <p>Я люблю тебя за твоё умение слушать,</p>
-            <p>Я люблю тебя за твою весёлую натуру,</p>
-            <p>Я люблю тебя за твою искренность,</p>
-            <p>За твою целеустремленность,</p>
-            <p>Я люблю тебя за твои объятия,</p>
-            <p>Я люблю тебя за твою лёгкость общения,</p>
-            <p>Я люблю тебя просто за то,</p>
-            <p>Что ты есть в моей жизни.</p>
+            <p>Есть люди, которые просто проходят мимо,</p>
+            <p>а есть те, кто меняет твой мир навсегда.</p>
+            <p>Для меня таким человеком стала ты.</p>
+            <p>Я долго думал, как выразить всё то, что чувствую,</p>
+            <p>и понял, что слов всегда будет мало.</p>
+            <p>Но я хочу, чтобы ты знала...</p>
+
+            <p>Я люблю тебя за твою невероятную <strong>заботу</strong>,</p>
+            <p>которая согревает лучше любого солнца.</p>
+            <p>За твою редкую <strong>доброту</strong> и <strong>искренность</strong> —</p>
+            <p>в мире, где так много фальши, твоя честность</p>
+            <p>для меня как глоток чистого воздуха.</p>
+            <p>Ты — самый добрый и отзывчивый человек, которого я знаю.</p>
+
+            <p>Я люблю тебя за твою <strong>поддержку</strong>.</p>
+            <p>За то, что ты веришь в меня и всегда рядом, когда это нужно.</p>
+            <p>Твоя <strong>щедрость</strong> души и умение отдавать себя без остатка —</p>
+            <p>это то, что я ценю в тебе бесконечно.</p>
+
+            <p>В тебе удивительно сочетаются сильный <strong>характер</strong>,</p>
+            <p>железная <strong>целеустремленность</strong> и при этом —</p>
+            <p>потрясающая <strong>чувствительность</strong> и нежность.</p>
+            <p>Твоя <strong>страсть</strong> к жизни, твои <strong>таланты</strong> и <strong>креативность</strong></p>
+            <p>не перестают меня восхищать.</p>
+
+            <p>Вика, ты ослепительно <strong>красива</strong>,</p>
+            <p>но твоя внутренняя красота еще ярче.</p>
+            <p>Я люблю твою <strong>весёлую натуру</strong>, твой смех</p>
+            <p>и ту <strong>лёгкость общения</strong>,</p>
+            <p>которая бывает только с самым близким человеком.</p>
+            <p>Спасибо тебе за твое <strong>умение слушать</strong>,</p>
+            <p>за твою <strong>терпимость</strong></p>
+            <p>и за те самые <strong>объятия</strong>,</p>
+            <p>в которых я забываю обо всем на свете.</p>
+
+            <p>Но больше всего я люблю тебя просто за то, что ты есть.</p>
+            <p>За то, что ты — это ты.</p>
+            <p>Моя жизнь стала по-настоящему полной только тогда,</p>
+            <p>когда в ней появилась ты.</p>
+
+            <p><strong>Я люблю тебя, Вика. Навсегда.</strong></p>
 
             <span class="final-heart">❤</span>
             
@@ -139,30 +193,43 @@
     </div>
 
     <script>
-        function createHeart() {
-            const container = document.getElementById('hearts-container');
+        function createParticle() {
+            const container = document.getElementById('particles-container');
             if (!container) return;
 
-            const h = document.createElement('div');
-            h.classList.add('b-heart');
+            const p = document.createElement('div');
+            p.classList.add('particle');
             
-            const types = ['❤', '💖', '💗', '💓', '💕'];
-            h.innerHTML = types[Math.floor(Math.random() * types.length)];
+            // Случайный размер частицы (от 3px до 8px)
+            const size = (Math.random() * 5 + 3) + 'px';
+            p.style.width = size;
+            p.style.height = size;
             
-            h.style.left = Math.random() * 100 + 'vw';
-            h.style.animationDuration = (Math.random() * 5 + 10) + 's'; /* ОЧЕНЬ медленный полет фона */
-            h.style.fontSize = (Math.random() * 20 + 15) + 'px'; /* Размер сердечек */
+            // Случайная позиция по горизонтали
+            p.style.left = Math.random() * 100 + 'vw';
             
-            container.appendChild(h);
+            // Случайная длительность полета (от 15 до 25 секунд) — ОЧЕНЬ медленно
+            p.style.animationDuration = (Math.random() * 10 + 15) + 's';
             
-            setTimeout(() => h.remove(), 15000);
+            // Случайная задержка начала анимации
+            p.style.animationDelay = (Math.random() * 5) + 's';
+
+            // Размытие для эффекта глубины
+            p.style.filter = `blur(${Math.random() * 2}px)`;
+
+            container.appendChild(p);
+            
+            // Удаляем частицу после завершения анимации
+            setTimeout(() => {
+                p.remove();
+            }, (parseFloat(p.style.animationDuration) + parseFloat(p.style.animationDelay)) * 1000);
         }
         
-        // Создаем новые фоновые сердечки реже
-        setInterval(createHeart, 400);
+        // Создаем новые частицы каждые 300мс
+        setInterval(createParticle, 300);
         
-        // Сразу заполняем фон
-        for(let i=0; i<20; i++){ createHeart(); }
+        // Сразу заполняем фон, чтобы он не был пустым при загрузке
+        for(let i=0; i<30; i++){ createParticle(); }
     </script>
 </body>
 </html>
