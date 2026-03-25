@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Для тебя</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #000; /* Черный фон */
+            color: #fff;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            height: 100vh;
+        }
+
+        /* Контейнер для анимации */
+        .marquee-container {
+            display: flex;
+            overflow: hidden;
+            white-space: nowrap;
+            user-select: none;
+        }
+
+        /* Сама строка с текстом */
+        .marquee-content {
+            display: flex;
+            animation: scroll 40s linear infinite; /* Скорость прокрутки */
+        }
+
+        .text-item {
+            font-size: 2.5rem;
+            font-weight: bold;
+            padding-right: 50px;
+            color: #ff4d6d; /* Розовый цвет текста */
+        }
+
+        /* Анимация движения */
+        @keyframes scroll {
+            from { transform: translateX(0); }
+            to { transform: translateX(-50%); }
+        }
+
+        /* Немного декора */
+        .heart {
+            color: red;
+            display: inline-block;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="marquee-container">
+        <div class="marquee-content">
+            <!-- Текст повторяется дважды для бесшовности -->
+            <div class="text-item">
+                @𝐁𝐞𝐡𝐚: Я люблю тебя за твою заботу, за твою доброту, за твою поддержку, за твою щедрость, за твой характер, за твою страсть, за твою терпимость, за твои таланты, за твою креативность, за твою красоту, за твою чувствительность, за твою смелость, за твоё умение слушать, за твою весёлую натуру, за твою искренность, за твою целеустремленность, за твои объятия, за твою лёгкость общения, за то, что ты есть в моей жизни <span class="heart">❤</span>
+            </div>
+            <div class="text-item">
+                @𝐁𝐞𝐡𝐚: Я люблю тебя за твою заботу, за твою доброту, за твою поддержку, за твою щедрость, за твой характер, за твою страсть, за твою терпимость, за твои таланты, за твою креативность, за твою красоту, за твою чувствительность, за твою смелость, за твоё умение слушать, за твою весёлую натуру, за твою искренность, за твою целеустремленность, за твои объятия, за твою лёгкость общения, за то, что ты есть в моей жизни <span class="heart">❤</span>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
