@@ -15,39 +15,45 @@
             display: flex;
             align-items: center;
             height: 100vh;
+            position: relative; /* Для позиционирования сердечек */
         }
 
-        /* Контейнер для анимации */
+        /* Контейнер для анимации текста */
         .marquee-container {
             display: flex;
             overflow: hidden;
             white-space: nowrap;
             user-select: none;
+            z-index: 2; /* Текст поверх сердечек */
+            width: 100%;
         }
 
         /* Сама строка с текстом */
         .marquee-content {
             display: flex;
-            animation: scroll 40s linear infinite; /* Скорость прокрутки */
+            animation: scroll 40s linear infinite;
         }
 
         .text-item {
             font-size: 2.5rem;
             font-weight: bold;
             padding-right: 50px;
-            color: #ff4d6d; /* Розовый цвет текста */
+            color: #ff4d6d; /* Основной цвет текста */
+            display: flex;
+            align-items: center;
         }
 
-        /* Анимация движения */
+        /* Анимация движения текста */
         @keyframes scroll {
             from { transform: translateX(0); }
             to { transform: translateX(-50%); }
         }
 
-        /* Немного декора */
-        .heart {
+        /* Пульсирующее сердечко в тексте */
+        .heart-inline {
             color: red;
             display: inline-block;
+            margin-left: 10px;
             animation: pulse 1.5s infinite;
         }
 
@@ -56,21 +62,87 @@
             50% { transform: scale(1.2); }
             100% { transform: scale(1); }
         }
+
+        /* Стили для падающих сердечек на фоне */
+        .background-heart {
+            position: absolute;
+            color: rgba(255, 77, 109, 0.5); /* Полупрозрачный розовый */
+            user-select: none;
+            pointer-events: none; /* Чтобы не мешали нажатиям */
+            z-index: 1; /* Фон */
+            animation: floatHearts linear infinite;
+        }
+
+        @keyframes floatHearts {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-10vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
     </style>
 </head>
 <body>
 
     <div class="marquee-container">
         <div class="marquee-content">
-            <!-- Текст повторяется дважды для бесшовности -->
             <div class="text-item">
-                @𝐁𝐞𝐡𝐚: Я люблю тебя за твою заботу, за твою доброту, за твою поддержку, за твою щедрость, за твой характер, за твою страсть, за твою терпимость, за твои таланты, за твою креативность, за твою красоту, за твою чувствительность, за твою смелость, за твоё умение слушать, за твою весёлую натуру, за твою искренность, за твою целеустремленность, за твои объятия, за твою лёгкость общения, за то, что ты есть в моей жизни <span class="heart">❤</span>
+                @𝐁𝐞𝐡𝐚: Я люблю тебя за твою заботу, за твою доброту, за твою поддержку, за твою щедрость, за твой характер, за твою страсть, за твою терпимость, за твои таланты, за твою креативность, за твою красоту, за твою чувствительность, за твою смелость, за твоё умение слушать, за твою весёлую натуру, за твою искренность, за твою целеустремленность, за твои объятия, за твою лёгкость общения, за то, что ты есть в моей жизни <span class="heart-inline">❤</span>
             </div>
             <div class="text-item">
-                @𝐁𝐞𝐡𝐚: Я люблю тебя за твою заботу, за твою доброту, за твою поддержку, за твою щедрость, за твой характер, за твою страсть, за твою терпимость, за твои таланты, за твою креативность, за твою красоту, за твою чувствительность, за твою смелость, за твоё умение слушать, за твою весёлую натуру, за твою искренность, за твою целеустремленность, за твои объятия, за твою лёгкость общения, за то, что ты есть в моей жизни <span class="heart">❤</span>
+                @𝐁𝐞𝐡𝐚: Я люблю тебя за твою заботу, за твою доброту, за твою поддержку, за твою щедрость, за твой характер, за твою страсть, за твою терпимость, за твои таланты, за твою креативность, за твою красоту, за твою чувствительность, за твою смелость, за твоё умение слушать, за твою весёлую натуру, за твою искренность, за твою целеустремленность, за твои объятия, за твою лёгкость общения, за то, что ты есть в моей жизни <span class="heart-inline">❤</span>
             </div>
         </div>
     </div>
+
+    <script>
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.classList.add('background-heart');
+            
+            // Набор символов сердечек
+            const heartTypes = ['❤', '💖', '💗', '💓', '💕'];
+            heart.innerText = heartTypes[Math.floor(Math.random() * heartTypes.length)];
+            
+            // Случайная позиция по горизонтали
+            heart.style.left = Math.random() * 100 + 'vw';
+            
+            // Случайный размер
+            const size = (Math.random() * 1.5 + 0.5) + 'rem';
+            heart.style.fontSize = size;
+            
+            // Случайная длительность анимации (скорость)
+            const duration = (Math.random() * 10 + 5) + 's';
+            heart.style.animationDuration = duration;
+            
+            // Случайная задержка начала
+            heart.style.animationDelay = Math.random() * 5 + 's';
+
+            document.body.appendChild(heart);
+
+            // Удаляем элемент после завершения анимации, чтобы не перегружать память
+            setTimeout(() => {
+                heart.remove();
+            }, (parseFloat(duration) + parseFloat(heart.style.animationDelay)) * 1000);
+        }
+
+        // Генерируем сердечки каждые 300мс
+        setInterval(createHeart, 300);
+
+        // Сразу создаем несколько, чтобы фон не был пустым при загрузке
+        for(let i=0; i<15; i++) {
+            createHeart();
+        }
+    </script>
 
 </body>
 </html>
