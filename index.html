@@ -2,174 +2,110 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Для тебя, Вика</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Для моей любимой</title>
     <style>
         body, html {
             margin: 0;
             padding: 0;
-            background: #000;
-            color: #fdf5e6;
-            font-family: 'Georgia', serif;
-            /* Разрешаем обычный скролл пальцем */
-            overflow-y: auto;
-            overflow-x: hidden;
-            scroll-behavior: smooth;
-        }
-
-        /* Красивый фон с градиентом */
-        .bg {
-            position: fixed;
-            top: 0;
-            left: 0;
             width: 100%;
-            height: 100%;
-            background: radial-gradient(circle at center, #1a0b0e 0%, #000 80%);
-            z-index: -1;
+            background-color: #b31b1b; /* Красивый глубокий красный */
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: white;
+            scroll-snap-type: y mandatory; /* Включает четкую фиксацию при свайпе */
+            overflow-x: hidden;
         }
 
-        /* Частицы на фоне */
-        #canvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            z-index: 0;
-            pointer-events: none;
-        }
-
-        .container {
-            position: relative;
-            z-index: 10;
-            width: 85%;
-            max-width: 500px;
-            margin: 0 auto;
+        .section {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
             text-align: center;
-            padding-top: 40vh; /* Чтобы текст начинался не сразу */
-            padding-bottom: 50vh; /* Чтобы можно было долистать до конца */
-        }
-
-        h1 {
-            font-size: 3.5rem;
-            color: #d4af37;
-            text-shadow: 0 0 20px rgba(212, 175, 55, 0.4);
-            margin-bottom: 100px;
-            font-style: italic;
-        }
-
-        p {
-            font-size: 1.4rem;
-            line-height: 2.2;
-            margin: 60px 0;
-            opacity: 0.2; /* Изначально текст почти прозрачный */
-            transform: translateY(20px);
-            transition: all 1s ease-out; /* Плавное проявление при скролле */
-        }
-
-        /* Класс для активной (видимой) строки */
-        p.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        strong {
-            color: #ff4d6d;
-            font-weight: normal;
+            padding: 40px;
+            box-sizing: border-box;
+            scroll-snap-align: start; /* Каждая секция "прилипает" к экрану */
+            font-size: 1.6rem;
+            line-height: 1.4;
+            text-shadow: 2px 2px 10px rgba(0,0,0,0.5);
         }
 
         .heart {
-            font-size: 4rem;
-            color: #ff4d6d;
-            margin-top: 100px;
-            display: inline-block;
-            animation: pulse 2s infinite;
+            font-size: 3rem;
+            margin-bottom: 20px;
+            display: block;
         }
 
-        @keyframes pulse {
-            0% { transform: scale(1); opacity: 0.8; }
-            50% { transform: scale(1.2); opacity: 1; }
-            100% { transform: scale(1); opacity: 0.8; }
+        .ps-text {
+            font-size: 1.2rem;
+            font-style: italic;
+            opacity: 0.9;
+        }
+
+        /* Маленькая подсказка снизу */
+        .hint {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.8rem;
+            opacity: 0.6;
+            animation: move 2s infinite;
+        }
+
+        @keyframes move {
+            0%, 20%, 50%, 80%, 100% {bottom: 20px;}
+            40% {bottom: 30px;}
+            60% {bottom: 25px;}
         }
     </style>
 </head>
 <body>
 
-    <div class="bg"></div>
-    <canvas id="canvas"></canvas>
-
-    <div class="container">
-        <h1>Вика.</h1>
-        
-        <p>Есть люди, которые просто проходят мимо, а есть те, кто меняет твой мир навсегда.</p>
-        <p>Для меня таким человеком стала ты.</p>
-        
-        <p>Я люблю тебя за твою невероятную <strong>заботу</strong>, которая согревает лучше любого солнца.</p>
-        <p>За твою редкую <strong>доброту</strong> и <strong>искренность</strong>.</p>
-        
-        <p>В мире, где так много фальши, твоя <strong>честность</strong> для меня как глоток чистого воздуха.</p>
-        <p>Ты — самый добрый человек, которого я знаю.</p>
-
-        <p>Я люблю тебя за твою <strong>поддержку</strong>. За то, что ты веришь в меня и всегда рядом.</p>
-        <p>Твоя <strong>щедрость</strong> души — это то, что я ценю в тебе бесконечно.</p>
-
-        <p>Вика, ты ослепительно <strong>красива</strong>, но твоя внутренняя красота еще ярче.</p>
-        <p>Я люблю твой смех и ту <strong>лёгкость</strong>, которая бывает только с самым близким человеком.</p>
-
-        <p>Спасибо тебе за твое <strong>умение слушать</strong>, за твои <strong>объятия</strong> и за то, что ты есть.</p>
-
-        <p>Моя жизнь стала по-настоящему полной только тогда, когда в ней появилась ты.</p>
-
-        <p style="font-size: 1.8rem;"><strong>Я люблю тебя. Навсегда.</strong></p>
-
-        <div class="heart">❤</div>
+    <div class="section">
+        <div>
+            <span class="heart">❤️</span>
+            Я люблю тебя за твою бесконечную доброту, которая согревает меня каждый день.
+        </div>
     </div>
 
-    <script>
-        // Код для золотых частиц
-        const canvas = document.getElementById('canvas');
-        const ctx = canvas.getContext('2d');
-        let particles = [];
-        function init() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-            for(let i = 0; i < 50; i++) {
-                particles.push({
-                    x: Math.random() * canvas.width,
-                    y: Math.random() * canvas.height,
-                    size: Math.random() * 2 + 1,
-                    speed: Math.random() * 0.3 + 0.1,
-                    opacity: Math.random() * 0.5
-                });
-            }
-        }
-        function draw() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            particles.forEach(p => {
-                ctx.fillStyle = `rgba(212, 175, 55, ${p.opacity})`;
-                ctx.beginPath();
-                ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-                ctx.fill();
-                p.y -= p.speed;
-                if(p.y < -10) p.y = canvas.height + 10;
-            });
-            requestAnimationFrame(draw);
-        }
-        init(); draw();
+    <div class="section">
+        <div>
+            Я люблю тебя за твою честность, потому что с тобой я всегда могу быть собой.
+        </div>
+    </div>
 
-        // Скрипт для проявления текста при скролле
-        const paragraphs = document.querySelectorAll('p');
-        const observerOptions = {
-            threshold: 0.5 // Текст проявляется, когда он на середине экрана
-        };
+    <div class="section">
+        <div>
+            Я люблю тебя за твою поддержку, ты — тот человек, на которого я всегда могу положиться.
+        </div>
+    </div>
 
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                }
-            });
-        }, observerOptions);
+    <div class="section">
+        <div>
+            Я люблю тебя за твою красоту, и внешнюю, и ту, что у тебя внутри.
+        </div>
+    </div>
 
-        paragraphs.forEach(p => observer.observe(p));
-    </script>
+    <div class="section">
+        <div>
+            Я люблю тебя за то, какой особенной ты делаешь мою жизнь каждую минуту.
+        </div>
+    </div>
+
+    <div class="section">
+        <div>
+            Я очень сильно люблю тебя и безумно жду нашей встречи, чтобы скорее тебя обнять! ✨
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="ps-text">
+            P.S. Не забудь поговорить с мамой насчет (презерватива), хорошо?
+        </div>
+    </div>
+
+    <div class="hint">Листай пальчиком вверх 👆</div>
+
 </body>
 </html>
